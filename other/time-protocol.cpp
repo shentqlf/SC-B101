@@ -1,15 +1,14 @@
 #include "time-protocol.h"
-TIME_PRO tp(&uart1);
+TIME_PRO date_time(&uart2);
 void uart_interrupt_event()
 {
-	tp.get_char(tp.usart->receive());
+	date_time.get_char(date_time.usart->receive());
 }
 
 
 void TIME_PRO::begin(u32 baud_rate)
 {
 	usart->begin(baud_rate);
-	usart->printf("ok\r\n");
 	usart->attach_interrupt(uart_interrupt_event);
 	usart->interrupt(ENABLE);
 }
@@ -38,7 +37,10 @@ int	TIME_PRO::cmd_check_dog()
 		return -1;
 	}
 	else
+	{
 		return 0;
+	}
+
 }
 int TIME_PRO::find_str(u8 *str,u8 *ptr,u16 &seek)
 {
@@ -77,8 +79,13 @@ int TIME_PRO::process()
 	u16 seek = 0;
 	u8 ret = 0;
 	u8 *p_cmd = NULL;
+	int flag;
+	//这个bug隐藏的太深了
+	no_interrupts();
+	flag = (cmd_check_dog() == -1) && (cmd_num > 0);
+	interrupts();
+	if( (cmd_check_dog() == -1) && (cmd_num > 0) )
 
-	if(cmd_check_dog() == -1 && (cmd_num > 0))
 	{
 		
 		memset(&date_time,0x00,sizeof(date_time));//清除结构体	
@@ -107,8 +114,16 @@ int TIME_PRO::process()
 				}				
 			}while(*p_cmd!='*');
 		}
+		date_time[12] = 0;
 		char_count = 0;
 		cmd_num = 0;
+		
+		uart1.printf((char *)buf);
+		if(buf[1] != 'd')
+			uart1.printf("flag = %d,cmd = %d",flag,cmd_num);
+		uart1.printf("\r\n");
+		memset(&buf,0x00,1024);//清除结构体	
+
 		return 1;
 	}
 	return 0;

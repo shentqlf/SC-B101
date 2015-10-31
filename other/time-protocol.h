@@ -1,13 +1,14 @@
 #ifndef __TIME_PROTOCOL
 #define __TIME_PROTOCOL
 #include "ebox.h"
-#define CMD_TIMEOUT 100//超过100ms没有获得命令数据，认为命令接收完成
+#define CMD_TIMEOUT 20//超过100ms没有获得命令数据，认为命令接收完成
 #define BUF_SIZE 1024//命令缓冲区大小，根据自己的需求定义。
 
 class TIME_PRO
 {
 	public:
 		u8 date_time[13];
+		u8		buf[BUF_SIZE];
 	public:
 		TIME_PRO(USART *p_usart)//传递秒中断的io接口
 		{
@@ -17,7 +18,6 @@ class TIME_PRO
 		int	process();//循环处理接收到的帧内容，如果有接收完成的命令，开始解析命令
 
 	private:
-		u8		buf[BUF_SIZE];
 		u32		cmd_current_time;
 		u8		cmd_num;
 		u16		char_count;
@@ -32,6 +32,6 @@ class TIME_PRO
 		friend void uart_interrupt_event();//友元函数，需要访问私有成员get_char();
 
 };
-extern TIME_PRO tp;
+extern TIME_PRO date_time;
 
 #endif

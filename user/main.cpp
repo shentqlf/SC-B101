@@ -44,9 +44,10 @@ void setup()
 
 	PPS_PIN.mode(OUTPUT_PP);
 	DATE_LED_PIN.mode(OUTPUT_PP);
+	uart1.begin(115200);
 	led.begin();
 	btn.begin();
-	tp.begin(9600);
+	date_time.begin(115200);
 
 	date_led_on();
 }
@@ -58,15 +59,18 @@ int main(void)
 	setup();
 	while(1)
 	{
-		if(tp.process() == 1)
+		if(date_time.process() == 1)
+		{
+			led.show_date_time(date_time.date_time);
 			current_systick = millis();
+		}
 		
 		if(millis() - current_systick > 500)
 			pps_off();
 		else
 			pps_on();
 
-		led.show_date_time(tp.date_time);
+//		delay_ms(1);
 //		pps_on();
 //		date_led_on();
 //		delay_ms(500);
