@@ -84,7 +84,7 @@ int TIME_PRO::process()
 	no_interrupts();
 	flag = (cmd_check_dog() == -1) && (cmd_num > 0);
 	interrupts();
-	if( (cmd_check_dog() == -1) && (cmd_num > 0) )
+	if( flag == 1 )
 
 	{
 		

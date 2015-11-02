@@ -1,7 +1,7 @@
 #ifndef __TIME_PROTOCOL
 #define __TIME_PROTOCOL
 #include "ebox.h"
-#define CMD_TIMEOUT 20//超过100ms没有获得命令数据，认为命令接收完成
+#define CMD_TIMEOUT 5//超过5ms没有获得命令数据，认为命令接收完成.这个值应该根据串口波特率设置
 #define BUF_SIZE 1024//命令缓冲区大小，根据自己的需求定义。
 
 class TIME_PRO
