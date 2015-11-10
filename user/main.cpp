@@ -61,7 +61,7 @@ int main(void)
 	{
 		if(date_time.process() == 1)
 		{
-			led.show_date_time(date_time.date_time);
+			led.show_date_time(date_time.date_time_string);
 			current_systick = millis();
 		}
 		

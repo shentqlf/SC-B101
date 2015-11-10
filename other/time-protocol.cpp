@@ -88,7 +88,7 @@ int TIME_PRO::process()
 
 	{
 		
-		memset(&date_time,0x00,sizeof(date_time));//清除结构体	
+		memset(&date_time_string,0x00,sizeof(date_time_string));//清除结构体	
 		ret = find_str(buf,(u8 *)"$dmyhms",seek);
 		if(ret == 0)
 		{
@@ -106,7 +106,7 @@ int TIME_PRO::process()
 						switch(item_count)
 						{
 							case 0:break;
-							case 1:date_time[bd_info_item_seek]		= *p_cmd;break;
+							case 1:date_time_string[bd_info_item_seek]		= *p_cmd;break;
 							default:break;								
 						}		
 						bd_info_item_seek++;						
@@ -114,7 +114,7 @@ int TIME_PRO::process()
 				}				
 			}while(*p_cmd!='*');
 		}
-		date_time[12] = 0;
+		//date_time[12] = 0;
 		char_count = 0;
 		cmd_num = 0;
 		

@@ -7,7 +7,7 @@
 class TIME_PRO
 {
 	public:
-		u8 date_time[13];
+		u8 date_time_string[13];
 		u8		buf[BUF_SIZE];
 	public:
 		TIME_PRO(USART *p_usart)//传递秒中断的io接口
